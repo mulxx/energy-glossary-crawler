@@ -104,7 +104,7 @@ def run(argv: Optional[List[str]] = None) -> int:
     args = parse_args(argv)
     output_dir = ensure_output_dir(args.output_dir)
 
-    all_entries: List[dict] = []
+    total_entries = 0
 
     for source in args.sources:
         crawler = build_crawler(source, args.slb_letters)
@@ -129,17 +129,13 @@ def run(argv: Optional[List[str]] = None) -> int:
         if args.format in ("text", "both"):
             save_text(entries, str(output_dir / f"{stem}.txt"))
 
-        all_entries.extend(entries)
+        total_entries += len(entries)
         logger.info("Crawler %s finished: %d entries", source, len(entries))
 
     # Combined output
-    if all_entries:
+    if total_entries > 0:
         logger.info("=" * 60)
-        logger.info("Total entries across all sources: %d", len(all_entries))
-        if args.format in ("json", "both"):
-            save_json(all_entries, str(output_dir / "all_glossary.json"))
-        if args.format in ("text", "both"):
-            save_text(all_entries, str(output_dir / "all_glossary.txt"))
+        logger.info("Total entries across all sources: %d", total_entries)
     else:
         logger.warning("No entries collected from any source.")
         return 1

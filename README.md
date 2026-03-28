@@ -86,7 +86,7 @@ Each entry is a dict with three fields:
 ]
 ```
 
-Per-source files (`slb.json`, `abb.json`, etc.) and a combined `all_glossary.json` are generated.
+Per-source files (`slb.json`, `abb.json`, etc.) are generated.
 
 ### Text
 
